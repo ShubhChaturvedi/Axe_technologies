@@ -21,6 +21,10 @@ js = """
     let content = document.getElementsByClassName('manhattan--container--1lP57Ag cards--gallery--2o6yJVt');
     for(let i=0;i<content.length;i++){
         content[i].click();
+        let price = document.getElementsByClassName('uniform-banner-box-price')[0].innerHTMl;
+        let d_price = document.getElementsByClassName('uniform-banner-box-discounts')[0].innerHTMl;
+        console.log(price)
+        console.log(d_price)
         let sample = {
             "product_title": "",
             "product_detail_page_url": content[i].getAttribute("href"),
@@ -28,9 +32,9 @@ js = """
             "product_features": "",
             "product_part_number": "",
             "product_model_number": "",
-            "product_price": "",
-            "product_display_price": "",
-            "product_currency": "",
+            "product_price": document.getElementsByClassName('uniform-banner-box-price')[0].innerHTMl,
+            "product_display_price": document.getElementsByClassName('uniform-banner-box-discounts')[0].innerHTMl,
+            "product_currency": "INR",
             "category_id": 2,
             "product_source_id": "",
             "product_specifications": "",
