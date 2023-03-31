@@ -31,7 +31,7 @@ js = """
             "product_price": "",
             "product_display_price": "",
             "product_currency": "",
-            "category_id": "",
+            "category_id": 2,
             "product_source_id": "",
             "product_specifications": "",
             "is_active": "",
