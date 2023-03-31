@@ -21,7 +21,7 @@ js = """
     let content = document.getElementsByClassName('manhattan--container--1lP57Ag cards--gallery--2o6yJVt');
     for(let i=0;i<content.length;i++){
         content[i].click();
-        let smaple = {
+        let sample = {
             "product_title": "",
             "product_detail_page_url": content[i].getAttribute("href"),
             "product_brand": "",
@@ -42,9 +42,9 @@ js = """
             "product_image_width": "",
             
             };
-            data.content[i] = smaple;
+            data[i] = sample;
         };
-    }
+        return data;
 """
 
 data = driver.execute_script(js)
