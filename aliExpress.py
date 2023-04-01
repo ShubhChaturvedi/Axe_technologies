@@ -26,7 +26,7 @@ js = """
         console.log(price)
         console.log(d_price)
         let sample = {
-            "product_title": "",
+            "product_title": document.getElementsByClassName('manhattan--titleText--WccSjUS')[0].innerHTMl,
             "product_detail_page_url": content[i].getAttribute("href"),
             "product_brand": "",
             "product_features": "",
