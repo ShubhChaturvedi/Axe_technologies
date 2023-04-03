@@ -10,24 +10,33 @@ driver.maximize_window()
 driver.get("https://www.google.com")
 time.sleep(1)
 query = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
-part_number = 'FX506LH'
+part_number = '82HS018XIN'
 query.send_keys(part_number)
 time.sleep(1)
 query.send_keys(Keys.ENTER)
-js = """
+js = f"""
         let links = []
-        for(let i=0;i<document.getElementsByClassName('lyLwlc').length;i++){
+        let search = "{part_number:s}".split("-");
+        for(let i=0;i<document.getElementsByClassName('lyLwlc').length;i++){{
             let divs = document.getElementsByClassName('lyLwlc')[i];
             let spans = divs.getElementsByTagName("span")[0];
-            if(spans != undefined && spans.getElementsByTagName("em")[0] != undefined){
-                if(spans.getElementsByTagName("em")[0].innerHTML === "FX506LH" ){
+            if(spans != undefined && spans.getElementsByTagName("em")[0] != undefined && spans.getElementsByTagName("em")[1] != undefined){{
+                if(spans.getElementsByTagName("em")[0].innerHTML === search[0] && spans.getElementsByTagName("em")[1].innerHTML === search[1]){{
                     let a = document.getElementsByClassName('yuRUbf')[i].getElementsByTagName("a")[0].getAttribute("href");
                     let link = [a];
                     links.push(link);
-                }
+                }}
             
-            }
-        }
+            }}
+            else if(spans != undefined && spans.getElementsByTagName("em")[0] != undefined){{
+                if(spans.getElementsByTagName("em")[0].innerHTML === search[0]){{
+                    let a = document.getElementsByClassName('yuRUbf')[i].getElementsByTagName("a")[0].getAttribute("href");
+                    let link = [a];
+                    links.push(link);
+                }}
+            
+            }}
+        }}
         return links;
     """
 links = driver.execute_script(js)
