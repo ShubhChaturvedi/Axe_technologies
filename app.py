@@ -11,7 +11,7 @@ driver.get("https://www.google.com")
 time.sleep(1)
 query = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 part_number = 'D560871WIN9B'
-platform = ['amazon', 'flipkart', 'reliancedigital', 'croma', 'vijaysales', 'samsung', 'hp', 'redmi','mi','nykaa', 'myntra']
+platforms = ['amazon', 'flipkart', 'reliancedigital', 'croma', 'vijaysales', 'samsung', 'hp', 'redmi','mi','nykaa', 'myntra']
 query.send_keys(part_number)
 time.sleep(1)
 query.send_keys(Keys.ENTER)
@@ -43,7 +43,7 @@ js = f"""
 links = driver.execute_script(js)
 new_links = []
 for link in links:
-    for platform in platform:
+    for platform in platforms:
         if platform in link[0]:
             new_links.append(link)
             break
