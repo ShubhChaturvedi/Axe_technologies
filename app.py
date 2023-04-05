@@ -52,8 +52,7 @@ def get_links(part_number, platforms, product_title):
         writer = csv.writer(file)
 
         # Write the data to the CSV file
-        for link in new_links:
-            writer.writerow([product_title ,link[0]])
+        writer.writerow([product_title ,new_links])
 
 
     driver.close()
