@@ -17,7 +17,11 @@ def get_links(part_number, platforms, product_title, product_id):
         query.send_keys(Keys.ENTER)
         js = f"""
                 let links = []
+                
                 let search = "{part_number:s}".split("-");
+                if(search.length === 1){{
+                    search = "{part_number:s}".split("/");
+                }}
                 for(let i=0;i<document.getElementsByClassName('lyLwlc').length;i++){{
                     let divs = document.getElementsByClassName('lyLwlc')[i];
                     let spans = divs.getElementsByTagName("span")[0];
@@ -44,7 +48,7 @@ def get_links(part_number, platforms, product_title, product_id):
         new_links = []
         for link in links:
             for platform in platforms:
-                if platform in link[0].split(".") or platform in link[0].split("/") or platform in link[0].split("-"):
+                if platform in link[0].split("."):
                     new_links.append(link)
                     break
 
