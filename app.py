@@ -44,8 +44,7 @@ def get_links(part_number, platforms, product_title, product_id):
         new_links = []
         for link in links:
             for platform in platforms:
-                lst = link[0].split(".")
-                if platform in lst:
+                if platform in link[0].split(".") or platform in link[0].split("/") or platform in link[0].split("-"):
                     new_links.append(link)
                     break
 
