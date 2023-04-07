@@ -56,7 +56,9 @@ def get_links(part_number, platforms, product_title, product_id):
         with open('output.csv', mode='a', newline='') as file:
             # Create a writer object
             writer = csv.writer(file)
-
+            for item in new_links:
+                if len(item[0].split('#')) != 1:
+                    item[0] = item[0].split('#')[0]
             # Write the data to the CSV file
             writer.writerow([product_id ,product_title ,new_links])
 
@@ -65,7 +67,7 @@ def get_links(part_number, platforms, product_title, product_id):
     driver.close()
 
 if __name__ == "__main__":
-    part_number = 'P7020NGAZ'
+    part_number = 'WA65A4002VS/TL'
     platforms = ['amazon', 'flipkart', 'reliancedigital', 'croma', 'vijaysales', 'samsung', 'hp', 'redmi', 'mi',
                  'nykaa', 'myntra']
-    get_links(part_number, platforms, "washing machine","5444")
+    get_links(part_number, platforms, "SAMSUNG 6.5 kg Diamond Drum feature Fully Automatic Top Load Silver(WA65A4002VS/TL)","731665")
