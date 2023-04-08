@@ -12,9 +12,14 @@ def get_links(part_number, platforms, product_title, product_id):
     driver.maximize_window()
     driver.get("https://www.google.com")
     try:
-        query = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
-        query.send_keys(part_number)
-        query.send_keys(Keys.ENTER)
+        # query = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
+        # query.send_keys(part_number)
+        # query.send_keys(Keys.ENTER)
+        js = f"""
+            let input = document.getElementsByClassName("gLFyf")[0].value = "{part_number:s}";
+            document.getElementsByClassName("gNO89b")[0].click();
+        """
+        driver.execute_script(js)
         js = f"""
                 let links = []
                 
@@ -53,7 +58,7 @@ def get_links(part_number, platforms, product_title, product_id):
                     break
 
 
-        with open('output.csv', mode='a', newline='') as file:
+        with open('output-laptop.csv', mode='a', newline='') as file:
             # Create a writer object
             writer = csv.writer(file)
             for item in new_links:
@@ -64,8 +69,6 @@ def get_links(part_number, platforms, product_title, product_id):
 
     except Exception as e:
         print(e)
-        driver.close()
-        get_links(part_number, platforms, product_title, product_id)
     driver.close()
 
 if __name__ == "__main__":
