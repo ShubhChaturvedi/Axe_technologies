@@ -64,6 +64,8 @@ def get_links(part_number, platforms, product_title, product_id):
 
     except Exception as e:
         print(e)
+        driver.close()
+        get_links(part_number, platforms, product_title, product_id)
     driver.close()
 
 if __name__ == "__main__":
