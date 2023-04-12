@@ -14,6 +14,7 @@ from collections import OrderedDict, defaultdict
 import nltk
 from nltk.corpus import stopwords
 nltk.download('stopwords')
+nltk.download('punkt')
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 
@@ -23,8 +24,8 @@ def db_connect():
     try:
         connection = pymysql.connect(
             host='localhost',
-            user='root',
-            password='admin@123',
+            user='shubh-compare',
+            password='Shubh1710',
             database='compare_app',
             cursorclass=pymysql.cursors.DictCursor
         )
@@ -39,7 +40,7 @@ def db_connect():
 helpers_dir = (os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.append(helpers_dir)
 
-import regex, stop_words, colors_list
+import regexFile, stop_words, colors_list
 
 
 #=================================================================
@@ -56,6 +57,8 @@ REPLACERS = r"(\,|\/|((\s)\-(\s))|((\s)\&(\s))|\+)"
 
 SUBSCRIPTION_KEY = "24586d64cce94c6baeee90dbed141c1b"
 API_ENDPOINT = "https://api.bing.microsoft.com/v7.0/search"
+SUBSCRIPTION_KEY = ""
+API_ENDPOINT = "https://www.google.com/search"
 
 REGISTERED_URLS = [
     "www.amazon.in",
@@ -422,7 +425,7 @@ class BingSearchApi():
             
             found = False
             
-            for a,b in regex.PROCESSOR_REGEX.items():
+            for a,b in regexFile.PROCESSOR_REGEX.items():
                 for c,d in b.items():
                     if isinstance(d, dict):
                         for key,val in d.items():
@@ -481,7 +484,7 @@ class BingSearchApi():
             "h_type": None,
         }
         
-        for key,val in regex.FILTER_PROCESSOR_REGEX.items():
+        for key,val in regexFile.FILTER_PROCESSOR_REGEX.items():
             
             matched = re.search(val, matched_data)
 
@@ -515,7 +518,7 @@ class BingSearchApi():
             }
             
             found = False
-            for a,b in regex.GRAPHICS_REGEX.items():
+            for a,b in regexFile.GRAPHICS_REGEX.items():
                 for c,d in b.items():
                     
                     if isinstance(d, dict):
@@ -648,7 +651,7 @@ class BingSearchApi():
             data_dict, product_name_group = self.memory_regex_mapper(data_dict=data_dict, 
                                                         product_name_group=product_name_group,
                                                         data_dict_key = "memory",
-                                                        pattern=regex.MEMORY_REGEX)
+                                                        pattern=regexFile.MEMORY_REGEX)
         
         # check storage
         #===================================================
@@ -656,7 +659,7 @@ class BingSearchApi():
         data_dict, product_name_group = self.storage_regex_mapper(data_dict=data_dict, 
                                                     product_name_group=product_name_group, 
                                                     data_dict_key="storage", 
-                                                    pattern=regex.STORAGE_REGEX)
+                                                    pattern=regexFile.STORAGE_REGEX)
         
         # check weight/capacity
         #===================================================    
@@ -664,14 +667,14 @@ class BingSearchApi():
         data_dict, product_name_group = self.dimension_regex_mapper(data_dict=data_dict, 
                                                     product_name_group=product_name_group, 
                                                     data_dict_key="weight", 
-                                                    pattern=regex.WEIGHT_REGEX)
+                                                    pattern=regexFile.WEIGHT_REGEX)
         # check size/dimensions
         #===================================================    
 
         data_dict, product_name_group = self.dimension_regex_mapper(data_dict=data_dict, 
                                                     product_name_group=product_name_group, 
                                                     data_dict_key="dimension", 
-                                                    pattern=regex.DIMENSION_REGEX)
+                                                    pattern=regexFile.DIMENSION_REGEX)
         
         # check processor
         #===================================================
@@ -686,7 +689,7 @@ class BingSearchApi():
         data_dict, product_name_group = self.regex_mapper(data_dict=data_dict, 
                                                     product_name_group=product_name_group, 
                                                     data_dict_key="os", 
-                                                    pattern=regex.OS_REGEX)
+                                                    pattern=regexFile.OS_REGEX)
         
         # check graphics
         #===================================================    
