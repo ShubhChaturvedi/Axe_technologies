@@ -23,10 +23,7 @@ def get_links(part_number, platforms, product_title, product_id):
         js = f"""
                 let links = []
                 
-                let search = "{part_number:s}".split("-");
-                if(search.length === 1){{
-                    search = "{part_number:s}".split("/");
-                }}
+                let search = "{part_number:s}".split("/[-/# ]+/");
                 for(let i=0;i<document.getElementsByClassName('lyLwlc').length;i++){{
                     let divs = document.getElementsByClassName('lyLwlc')[i];
                     let spans = divs.getElementsByTagName("span")[0];
@@ -58,7 +55,7 @@ def get_links(part_number, platforms, product_title, product_id):
                     break
 
 
-        with open('output-laptop.csv', mode='a', newline='') as file:
+        with open('output-mobile.csv', mode='a', newline='') as file:
             # Create a writer object
             writer = csv.writer(file)
             for item in new_links:
@@ -72,7 +69,7 @@ def get_links(part_number, platforms, product_title, product_id):
     driver.close()
 
 if __name__ == "__main__":
-    part_number = 'WA65A4002VS/TL'
+    part_number = '105 TA-1203 SS'
     platforms = ['amazon', 'flipkart', 'reliancedigital', 'croma', 'vijaysales', 'samsung', 'hp', 'redmi', 'mi',
                  'nykaa', 'myntra']
-    get_links(part_number, platforms, "SAMSUNG 6.5 kg Diamond Drum feature Fully Automatic Top Load Silver(WA65A4002VS/TL)","731665")
+    get_links(part_number, platforms, "","731665")
