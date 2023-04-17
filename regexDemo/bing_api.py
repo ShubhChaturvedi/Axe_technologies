@@ -9,7 +9,7 @@ import urllib.parse
 import csv
 import json
 from bs4 import BeautifulSoup
-
+import csv
 from collections import OrderedDict, defaultdict
 
 import nltk
@@ -1038,7 +1038,19 @@ class GoogleSearchApi():
             
             compare_processor = CompareProcessor(self.compare_data)
             compare_processor.compare_processor()
-            
+            with open('compared_dataset.csv', 'w', newline='') as csvfile:
+                fieldnames = ['name', 'url', 'snippet']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+
+                for product in product_list:
+                    try:
+                        writer.writerow(product)
+                    except Exception as e:
+                        print(f"Error while writing product {product}: {e}")
+
+            print("Data written to compared_dataset.csv file successfully.")
+            return True
         else:
            return False 
         
