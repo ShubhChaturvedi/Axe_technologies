@@ -8,6 +8,7 @@ import requests
 import urllib.parse
 import csv
 import json
+from bs4 import BeautifulSoup
 
 from collections import OrderedDict, defaultdict
 
@@ -48,7 +49,7 @@ import regexFile, stop_words, colors_list
 #=================================================================
 
 BRANDS_FILE = os.path.join(os.getcwd(), 'brands_list.csv')
-# print("Bran")
+print(BRANDS_FILE)
 # print()
 # print(BRANDS_FILE)
 BRANDS_JSON = os.path.join(os.getcwd(), 'brands_list.json')
@@ -58,7 +59,7 @@ REPLACERS = r"(\,|\/|((\s)\-(\s))|((\s)\&(\s))|\+)"
 SUBSCRIPTION_KEY = "24586d64cce94c6baeee90dbed141c1b"
 API_ENDPOINT = "https://api.bing.microsoft.com/v7.0/search"
 SUBSCRIPTION_KEY = ""
-API_ENDPOINT = "https://www.google.com/search"
+API_ENDPOINT = "https://www.google.com/search?q="
 
 REGISTERED_URLS = [
     "www.amazon.in",
@@ -88,7 +89,7 @@ class DataWriter():
 # Bing Search API Class
 #=================================================================
 
-class BingSearchApi():
+class GoogleSearchApi():
     
     # Initializing class
     #
@@ -229,35 +230,53 @@ class BingSearchApi():
     # Bing API Call -- Function 
     # returns search results from bing
     #=================================================================
-    def call_bing_api(self, query=""):
+    def call_google_api(self, query=""):
         
         if query.strip()=="":
             return False
     
         # Construct a request
         #=================================================================
-        mkt = 'en-US'
-        params = { 'q': query, 'answerCount':2}
-        headers = { 'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY }
+        # mkt = 'en-US'
+        # params = { 'q': query, 'answerCount':2}
+        # headers = { 'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY }
 
         product_list = []
-        
+        url = API_ENDPOINT+query
         try:
-            response = requests.get(API_ENDPOINT, headers=headers, params=params)
-            response.raise_for_status()
+            response = requests.get(url)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            portals = ["amazon", "flipkart", "reliancedigital", "croma", "vijaysales", "samsung", "hp", "redmi", "mi", "nykaa", "myntra"]
+            # print(soup.encode("utf-8"))
+            products = soup.findAll(class_="Gx5Zad fP1Qef xpd EtOod pkphOe")
+            new_links = []
+            # response.raise_for_status()
 
-            results = response.json()
+            # results = response.json()
             
-            for product in results["webPages"]["value"]:        
-                o = urllib.parse.urlsplit(product["url"])
+            for product in products:        
+                # o = urllib.parse.urlsplit(product["url"])
 
-                if o.hostname in REGISTERED_URLS:
+                # if o.hostname in REGISTERED_URLS:
+                prod_url = product.find(class_="egMi0 kCrYT")
+                product_url = prod_url.find("a")["href"]
+                product_url = product_url.replace("/url?q=", "")
+                product_url_list = product_url.split("&sa=")
+                product_url_list = product_url_list[0].split("%3")
+                url_list = product_url_list[0].split("/")
+                url_filter = url_list[2].split(".")
+                check = url_filter[1] in portals
+                if not check:
+                    continue
+                uri = product_url_list[0]
+                product_desc = product.find(class_="BNeawe s3v9rd AP7Wnd").text.encode("ascii", "ignore").decode()
+                product_title = product.find(class_="BNeawe vvjwJb AP7Wnd").text.encode("ascii", "ignore").decode()
                     
-                    product_list.append({
-                        "url": product["url"],
-                        "snippet": product["snippet"],
-                        "name": product["name"]
-                    })
+                product_list.append({
+                    "url": uri,
+                    "snippet": product_desc,
+                    "name": product_title
+                })
             # print(product_list)
             # print()
             # print()
@@ -920,7 +939,7 @@ class BingSearchApi():
         # print(data_dict)
         
         if main_product:
-            product_list = self.call_bing_api(keywords)
+            product_list = self.call_google_api(keywords)
 
             self.length_search_list = len(product_list)
         
@@ -1240,7 +1259,7 @@ class CompareProcessor():
 #
 product_title = """OnePlus Nord CE 2 5G (Gray Mirror, 8GB RAM, 128GB Storage)"""
 
-prod_search = BingSearchApi()
+prod_search = GoogleSearchApi()
 ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
 
 if ret:
