@@ -1038,7 +1038,7 @@ class GoogleSearchApi():
             
             compare_processor = CompareProcessor(self.compare_data)
             compare_processor.compare_processor()
-            with open('compared_dataset.csv', 'w', newline='') as csvfile:
+            with open('compared_dataset.csv', 'a', newline='') as csvfile:
                 fieldnames = ['name', 'url', 'snippet']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
@@ -1270,7 +1270,16 @@ class CompareProcessor():
 
 #
 #
-product_title = """OnePlus Nord CE 2 5G (Gray Mirror, 8GB RAM, 128GB Storage)"""
+# with open('../app_product_master.csv',mode='r') as f:
+#     reader = csv.reader(f)
+#     for row in f:
+#
+#         product_title = f"""{row[1]}"""
+#
+#         prod_search = GoogleSearchApi()
+#         ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
+
+product_title = f"""OPPO A74 5G (Fluid Black, 6GB RAM, 128GB Storage) with No Cost EMI/Additional Exchange Offers"""
 
 prod_search = GoogleSearchApi()
 ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
