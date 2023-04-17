@@ -56,8 +56,9 @@ BRANDS_JSON = os.path.join(os.getcwd(), 'brands_list.json')
 
 REPLACERS = r"(\,|\/|((\s)\-(\s))|((\s)\&(\s))|\+)"
 
-SUBSCRIPTION_KEY = "24586d64cce94c6baeee90dbed141c1b"
-API_ENDPOINT = "https://api.bing.microsoft.com/v7.0/search"
+# SUBSCRIPTION_KEY = "24586d64cce94c6baeee90dbed141c1b"
+# API_ENDPOINT = "https://api.bing.microsoft.com/v7.0/search"
+
 SUBSCRIPTION_KEY = ""
 API_ENDPOINT = "https://www.google.com/search?q="
 
@@ -86,7 +87,7 @@ class DataWriter():
     
 
 #=================================================================
-# Bing Search API Class
+# Google Search API Class
 #=================================================================
 
 class GoogleSearchApi():
@@ -96,7 +97,7 @@ class GoogleSearchApi():
     # product_name <string> <optional depending on condition called>
     # product_id <integer> <optional depending on condition called>
     # product_data <dictionary> <optional depending on condition called>
-    # main_product <boolean> <if called on the product in db or on bing search product name>
+    # main_product <boolean> <if called on the product in db or on Google search product name>
     # compare_data <list> <used for storing comparision data>
     # search_results <list> <used to store search results>
     #================================================================
@@ -116,7 +117,7 @@ class GoogleSearchApi():
         
         self.brands_list = []
         
-        # Container for storing bing search reasults
+        # Container for storing Google search reasults
         self.product_list = [] 
         
         # create brands list
@@ -227,8 +228,8 @@ class GoogleSearchApi():
         return False
     
     #=================================================================
-    # Bing API Call -- Function 
-    # returns search results from bing
+    # Google API Call -- Function
+    # returns search results from Google
     #=================================================================
     def call_google_api(self, query=""):
         
@@ -822,9 +823,9 @@ class GoogleSearchApi():
                     data_dict["brand"] = self.product_data["product_brand"]
             
         # if it is a main_product then only
-        # do not use for bing search results
+        # do not use for Google search results
         # fetch data from database if product_name is not available
-        # run complete process along with bing search
+        # run complete process along with Google search
         #================================================================
         if main_product:
             self.db_connect = db_connect()
