@@ -1323,7 +1323,7 @@ class CompareProcessor():
 #         prod_search = GoogleSearchApi()
 #         ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
 
-product_title = f"""OPPO A74 5G (Fluid Black, 6GB RAM, 128GB Storage) with No Cost EMI/Additional Exchange Offers"""
+product_title = f"""realme narzo 50i (Carbon Black, 4GB RAM+64GB Storage) - with No Cost EMI/Additional Exchange Offers"""
 
 prod_search = GoogleSearchApi()
 ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
