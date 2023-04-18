@@ -1040,28 +1040,16 @@ class GoogleSearchApi():
             compare_processor = CompareProcessor(self.compare_data)
             details = self.compare_data
             compare_processor.compare_processor()
-            # with open('compared_dataset.csv', 'a', newline='') as csvfile:
-            #     fieldnames = ['name', 'url', 'snippet', 'compared_data']
-            #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            #     writer.writeheader()
-            #
-            #     for product in product_list:
-            #         try:
-            #             product['compared_data'] = self.compared_data
-            #             writer.writerow(product)
-            #         except Exception as e:
-            #             print(f"Error while writing product {product}: {e}")
-            #
-            # print("Data written to compared_dataset.csv file successfully.")
-            # return True
             with open('compared_dataset.csv', 'a', newline='') as csvfile:
-                fieldnames = ['name', 'url', 'snippet', 'storage', 'storage_details', 'storage_counter', 'memory', 'memory_details', 'graphics', 'graphics_details', 'processor', 'processor_details', 'color', 'brand']
+                fieldnames = ['number_of_links','title','name', 'url', 'snippet', 'storage', 'storage_details', 'storage_counter', 'memory', 'memory_details', 'graphics', 'graphics_details', 'processor', 'processor_details', 'color', 'brand']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
 
                 for product in product_list:
                     try:
                         # Serialize the compared_data dictionary to a string
+                        product['number_of_links'] = len(product_list)
+                        product['title'] = prod_title
                         product['storage'] = details[0]['storage']
                         product['storage_details'] = details[0]['storage_details']
                         product['storage_counter'] = details[0]['storage_counter']
@@ -1079,22 +1067,6 @@ class GoogleSearchApi():
 
             print("Data written to compared_dataset.csv file successfully.")
             return True
-            # with open('compared_dataset.csv', 'a', newline='') as csvfile:
-            #     fieldnames = ['name', 'url', 'snippet', 'compared_data']
-            #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            #     writer.writeheader()
-            #
-            #     for product in product_list:
-            #         try:
-            #             # Add the compared_data to the product dictionary
-            #             product['compared_data'] = self.compared_data
-            #
-            #             writer.writerow(product)
-            #         except Exception as e:
-            #             print(f"Error while writing product {product}: {e}")
-            #
-            # print("Data written to compared_dataset.csv file successfully.")
-            # return True
         else:
            return False 
         
@@ -1323,7 +1295,10 @@ class CompareProcessor():
 #         prod_search = GoogleSearchApi()
 #         ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
 
-product_title = f"""realme narzo 50i (Carbon Black, 4GB RAM+64GB Storage) - with No Cost EMI/Additional Exchange Offers"""
+product_title = f"""OnePlus Nord CE 2 5G (Gray Mirror, 8GB RAM, 128GB Storage)"""
+global prod_title
+prod_title  = (" ").join([product_title.split(" ")[0], product_title.split(" ")[1] , product_title.split(" ")[2]])
+
 
 prod_search = GoogleSearchApi()
 ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
