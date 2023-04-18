@@ -114,6 +114,7 @@ class GoogleSearchApi():
         self.search_results = []
         self.length_serach_list = 0
         self.x=1
+        self.compared_data = {}
         
         self.brands_list = []
         
@@ -1037,20 +1038,63 @@ class GoogleSearchApi():
             #================================================================
             
             compare_processor = CompareProcessor(self.compare_data)
+            details = self.compare_data
             compare_processor.compare_processor()
+            # with open('compared_dataset.csv', 'a', newline='') as csvfile:
+            #     fieldnames = ['name', 'url', 'snippet', 'compared_data']
+            #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            #     writer.writeheader()
+            #
+            #     for product in product_list:
+            #         try:
+            #             product['compared_data'] = self.compared_data
+            #             writer.writerow(product)
+            #         except Exception as e:
+            #             print(f"Error while writing product {product}: {e}")
+            #
+            # print("Data written to compared_dataset.csv file successfully.")
+            # return True
             with open('compared_dataset.csv', 'a', newline='') as csvfile:
-                fieldnames = ['name', 'url', 'snippet']
+                fieldnames = ['name', 'url', 'snippet', 'storage', 'storage_details', 'storage_counter', 'memory', 'memory_details', 'graphics', 'graphics_details', 'processor', 'processor_details', 'color', 'brand']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
 
                 for product in product_list:
                     try:
+                        # Serialize the compared_data dictionary to a string
+                        product['storage'] = details[0]['storage']
+                        product['storage_details'] = details[0]['storage_details']
+                        product['storage_counter'] = details[0]['storage_counter']
+                        product['memory'] = details[0]['memory']
+                        product['memory_details'] = details[0]['memory_details']
+                        product['graphics'] = details[0]['graphics']
+                        product['graphics_details'] = details[0]['graphics_details']
+                        product['processor'] = details[0]['processor']
+                        product['processor_details'] = details[0]['processor_details']
+                        product['color'] = details[0]['color']
+                        product['brand'] = details[0]['brand']
                         writer.writerow(product)
                     except Exception as e:
                         print(f"Error while writing product {product}: {e}")
 
             print("Data written to compared_dataset.csv file successfully.")
             return True
+            # with open('compared_dataset.csv', 'a', newline='') as csvfile:
+            #     fieldnames = ['name', 'url', 'snippet', 'compared_data']
+            #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            #     writer.writeheader()
+            #
+            #     for product in product_list:
+            #         try:
+            #             # Add the compared_data to the product dictionary
+            #             product['compared_data'] = self.compared_data
+            #
+            #             writer.writerow(product)
+            #         except Exception as e:
+            #             print(f"Error while writing product {product}: {e}")
+            #
+            # print("Data written to compared_dataset.csv file successfully.")
+            # return True
         else:
            return False 
         
