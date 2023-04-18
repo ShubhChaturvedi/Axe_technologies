@@ -1040,7 +1040,7 @@ class GoogleSearchApi():
             compare_processor = CompareProcessor(self.compare_data)
             details = self.compare_data
             compare_processor.compare_processor()
-            with open('compared_dataset.csv', 'a', newline='') as csvfile:
+            with open('laptop_compared_dataset.csv', 'a', newline='') as csvfile:
                 fieldnames = ['number_of_links','title','name', 'url', 'snippet', 'storage', 'storage_details', 'storage_counter', 'memory', 'memory_details', 'graphics', 'graphics_details', 'processor', 'processor_details', 'color', 'brand']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
@@ -1295,7 +1295,7 @@ class CompareProcessor():
 #         prod_search = GoogleSearchApi()
 #         ret, product_list = prod_search.keyword_splitter(product_name=product_title, main_product=True)
 
-product_title = f"""OnePlus Nord CE 2 5G (Gray Mirror, 8GB RAM, 128GB Storage)"""
+product_title = f"""DELL Inspiron Athlon Dual Core 3050U - (8 GB/256 GB SSD/Windows 11 Home) Inspiron 3525 Notebook(15.6 Inch, Carbon Black, 1.68 Kg, With MS Office)"""
 global prod_title
 prod_title  = (" ").join([product_title.split(" ")[0], product_title.split(" ")[1] , product_title.split(" ")[2]])
 
