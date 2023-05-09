@@ -1,7 +1,7 @@
 import app
 import csv
 if __name__ == '__main__':
-    with open('app_product_data.csv', mode='r') as file:
+    with open('app_product_master.csv', mode='r') as file:
         reader = csv.reader(file)
         platforms = ['amazon', 'flipkart', 'reliancedigital', 'croma', 'vijaysales', 'samsung', 'hp', 'redmi', 'mi',
                      'nykaa', 'myntra']
