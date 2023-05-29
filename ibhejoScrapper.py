@@ -6,16 +6,21 @@ import re
 response = requests.get("https://www.ibhejo.com/vitamin/multi-vitamins")
 html_content = response.text
 soup = BeautifulSoup(html_content, 'html.parser')
+
 lst = []
 for i in range(5):
     h3_tag = soup.find_all('h3', class_='product-title')[i]
     anchor_tag = h3_tag.find('a')
-    price = soup.find_all('span', class_='price')[i]
+    # price = soup.find_all('span', class_='price')[i]
     link = anchor_tag['href']
-    text = anchor_tag.get_text()
+    product_page = requests.get(link)
+    html_content = product_page.text
+    soup = BeautifulSoup(html_content, 'html.parser')
+    title = soup.find_all('h1', class_='product-title')
+    price = soup.find('strong', class_='lbl-price')
     lst.append({
         "link": link,
-        "text": text,
+        "text": title[0].get_text(strip=True),
         "price": price.get_text(strip=True)
 
     })
