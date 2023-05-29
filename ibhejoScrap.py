@@ -7,7 +7,7 @@ html_content = response.text
 soup = BeautifulSoup(html_content, 'html.parser')
 dict = {
     "Product Name": soup.find('h1', class_='product-title').get_text(strip=True),
-    "Product Price": soup.find('strong', class_='lbl-price').get_text(strip=True),
+    "Product Price": soup.find('strong', class_='lbl-price').get_text(strip=True).split("₹")[2],
     "Product link" : link
 }
 
