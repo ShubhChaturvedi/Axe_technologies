@@ -1,25 +1,12 @@
+import re
+
 MOBILE_REGEX = {
-    "model": r"[\w\s]+",
-    "color": r"[\w\s]+",
-    "ram": r"\d+GB",
-    "storage": r"\d+GB|\d+GB ROM|\d+ GB",
-    "processor": r"[\w\s]+ Processor|\d+GHz \w+[\s-]?core [\w\s]+ Processor",
-    "battery": r"\d+mAh Battery",
-    "charger": r"No Charger Variant|Charger Included",
-    "display": r"FHD\+ Display|\d+MP[\s\w]+ Display|sAMOLED\+ \d+Hz",
-    "camera": r"\d+MP[\s\w]+ Camera|\d+MP[\s\w]+ Triple Camera|\d+MP[\s\w]+ Dual Camera",
-    "sim": r"Single SIM|Dual SIM",
-    "fm_radio": r"Wireless FM Radio",
-    "camera_type": r"Rear VGA Camera|\d+ MP Camera",
-    "screen_size": r"\d+(\.\d+)? Inch Screen",
-    "memory": r"\d+ GB Free Memory",
-    "refresh_rate": r"\d+Hz Refresh Rate",
-    "expandable_ram": r"\d+GB Expandable RAM",
-    "fast_charging": r"\d+W Pro Fast Charging|\d+W Charger Included",
-    "in_segment": r"Best in-Segment \d+Hz Refresh Rate",
-    "snapdragon": r"Snapdragon \d+[\s\w]+ Processor",
-    "snapdragon_gen": r"Snapdragon \d+ Gen \d+",
-    "dimensity": r"Dimensity \d+ 5G",
+    "battery": r"(?:^\d+\s?mah\s?battery\s?$)|(?:^\d+\s?mah\s?$)|(?:^\d+\s?mah\s?battery)|(?:^\d+\s?mah)",
+    "charger" : r"(?:^\d+\s?w\s?fast\s?charger\s?$)|(?:^\d+\s?w\s?charger\s?$)|(?:^\d+\s?w\s?fast\s?charge)|(?:^\d+\s?w\s?charge)|(?:^\d+\s?w\s?fast\s?charger)|(?:^\d+\s?w\s?charger)|(?:^\d+\s?w\s?fast\s?charge)|(?:^\d+\s?w\s?charge)",
+    "display": r"(?:^\d+\s?fhd\+ display\s?$)|(?:^\d+mp[\s\w]+ display\s?$)|(?:^\d+\s?s+\s?amoled\+\d+hz\s?$)|(?:^\d+\s?fhd\+ display)|(?:^\d+mp[\s\w]+ display)|(?:^\d+\s?s+\s?amoled\+\d+hz)",
+    "camera": r"(\d+MP[\s\w]+ camera|\d+MP[\s\w]+ triple camera|\d+mp[\s\w]+ dual camera)|(\d+MP[\s\w]+ camera|\d+MP[\s\w]+ triple camera|\d+mp[\s\w]+ dual camera\s)",
+    "sim": r"(?:^\d+\s?singal\s?sim\s?$)|(?:^\d+\s?dual\s?sim\s?$)|(?:^\d+\s?singal\s?sim)|(?:^\d+\s?dual\s?sim)",
+    "camera_type": r"(?:^\d+\s?rear vga camera)|(?:^\d+ mp camera)|(?:^\d+\s?rear vga camera\s?$)|(?:^\d+ mp camera\s?$)"
 }
 
 
