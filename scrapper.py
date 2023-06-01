@@ -39,7 +39,7 @@ class Scrapper:
     def scrape_ibhejo(self):
         product_name = self.soup.find('h1', class_='product-title').get_text(strip=True)
         product_price = self.soup.find('strong', class_='lbl-price').get_text(strip=True).split("₹")[2]
-        in_stock = "in stock"
+        in_stock = self.soup.find('span', class_='status-in-stock').get_text(strip=True)
 
         data = {
             "Product Name": product_name,
