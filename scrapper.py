@@ -29,7 +29,7 @@ class Scrapper:
                 "Product Name": product_name,
                 "Product Price": product_price or None,
                 "Product link": self.link,
-                "in_stock": in_stock or None
+                "in_stock": in_stock
             }
 
             self.save_to_database(data, self.site_address_id, self.product_id)
@@ -52,7 +52,7 @@ class Scrapper:
                 "Product Name": product_name,
                 "Product Price": product_price or None,
                 "Product link": self.link,
-                "in_stock": in_stock or None
+                "in_stock": in_stock
             }
 
             self.save_to_database(data, self.site_address_id, self.product_id)
@@ -75,7 +75,7 @@ class Scrapper:
                 "Product Name": product_name,
                 "Product Price": product_price or None,
                 "Product link": self.link,
-                "in_stock": in_stock or None
+                "in_stock": in_stock
             }
 
             self.save_to_database(data, self.site_address_id, self.product_id)
