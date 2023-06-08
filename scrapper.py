@@ -277,6 +277,7 @@ class Scrapper:
                 price = None
                 stock = None
             data = {
+
                 "Product Name": product_name,
                 "Product Price": price,
                 "Product link": self.link,
