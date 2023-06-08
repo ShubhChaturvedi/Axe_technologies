@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 from datetime import datetime
-
+import json
 class Scrapper:
     def __init__(self, link):
         try:
@@ -128,7 +128,166 @@ class Scrapper:
         except AttributeError as e:
             print("An error occurred while scraping health_mall:", str(e))
             return None
+    def scrape_healthkart(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            self.site_address_id = 43
+            product_name = self.soup.find('h1', class_='variantInfo_var-info__nm__ZlOER').get_text(strip=True)
+            try:
+                price = self.soup.find('span', class_='price-value-value variantInfo_price-value-value__2ZQIC').get_text(
+                    strip=True).encode("ascii", "ignore").decode()
 
+                stock = self.soup.find('button', class_="track-add-to-cart")
+            except AttributeError as e:
+                price = None
+                stock = None
+
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_nutrabey(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name = self.soup.find('h1', class_='product-title entry-title').get_text(strip=True)
+            try:
+                price = json.loads(self.soup.find(class_='variations_form cart')["data-product_variations"])[0]["display_price"]
+
+                stock = self.soup.find('button', class_="single_add_to_cart_button button alt wp-element-button")
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_naturefitshop(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name = self.soup.find('input', attrs={'name': 'gtm4wp_name'})["value"]
+            try:
+                price = self.soup.find('input', attrs={'name': 'gtm4wp_price'})["value"]
+
+                stock = self.soup.find('input', attrs={'name': 'gtm4wp_stocklevel'})["value"]
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_wellbeingnutrition(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name =  self.soup.find('h1', class_='product-single__title').get_text(strip=True)
+            try:
+                price = self.soup.find('span', class_='price-item price-item--regular').get_text(strip=True).encode("ascii", "ignore").decode()
+                stock = self.soup.find('button', class_="btn product-form__cart-submit")
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_newgadgetsindia(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name =  self.soup.find('h1', class_="product_title").get_text(strip=True)
+            try:
+                price = self.soup.find_all('span', class_="woocommerce-Price-amount")[2].find('bdi').get_text(strip=True)
+                stock = "in_stock"
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_fliptwirls(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name = self.soup.find('h1', class_="product_title").get_text(strip=True)
+            try:
+                price = self.soup.find_all('span', class_="woocommerce-Price-amount")[1].find('bdi').get_text(strip=True)
+                stock = "in_stock"
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_addmecart(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name =  self.soup.find('h1', class_="product_title").get_text(strip=True)
+            try:
+                price = self.soup.find_all('span', class_="woocommerce-Price-amount")[1].find('bdi').get_text(strip=True)
+                stock = "in_stock"
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
     def save_to_database(self, data, site_address_id, product_id):
         try:
             connection = mysql.connector.connect(
