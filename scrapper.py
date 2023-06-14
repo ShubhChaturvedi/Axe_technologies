@@ -332,7 +332,6 @@ class Scrapper:
     def scrape_hyugalife(self):
         try:
             self.driver.get(self.link)
-
             script = f"""
                         let title = document.getElementsByClassName("tracking-tight")[3].innerText;
                         let price = document.getElementsByClassName("tracking-tight")[4].innerText;
