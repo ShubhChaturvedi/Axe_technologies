@@ -3,10 +3,27 @@ import requests
 import mysql.connector
 from datetime import datetime
 import json
+from selenium import webdriver
 class Scrapper:
     def __init__(self, link):
         try:
             self.link = link
+            self.user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+
+            options = webdriver.ChromeOptions()
+            options.headless = True
+            options.add_argument(f'user-agent={self.user_agent}')
+            options.add_argument("--window-size=1920,1080")
+            options.add_argument('--ignore-certificate-errors')
+            options.add_argument('--allow-running-insecure-content')
+            options.add_argument("--disable-extensions")
+            options.add_argument("--proxy-server='direct://'")
+            options.add_argument("--proxy-bypass-list=*")
+            options.add_argument("--start-maximized")
+            options.add_argument('--disable-gpu')
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument('--no-sandbox')
+            self.driver = webdriver.Chrome(options=options)
             self.response = requests.get(link)
             self.html_content = self.response.text
             self.soup = BeautifulSoup(self.html_content, 'html.parser')
@@ -289,6 +306,160 @@ class Scrapper:
         except AttributeError as e:
             print("An error occurred while scraping health_mall:", str(e))
             return None
+    def scrape_moglix(self):
+        try:
+            self.soup = BeautifulSoup(self.response.text, 'html.parser')
+            product_name =  self.soup.find('h1', class_="prod-name").get_text(strip=True)
+            try:
+                price = "₹" + self.soup.find_all('p', class_="actual-price")[1].find('strong').get_text(strip=True).split("₹")[1]
+                stock = "in_stock"
+            except AttributeError as e:
+                price = None
+                stock = None
+            data = {
+
+                "Product Name": product_name,
+                "Product Price": price,
+                "Product link": self.link,
+                "in_stock": stock
+            }
+
+            self.save_to_database(data, self.site_address_id, self.product_id)
+            return data
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_hyugalife(self):
+        try:
+            self.driver.get(self.link)
+
+            script = f"""
+                        let title = document.getElementsByClassName("tracking-tight")[3].innerText;
+                        let price = document.getElementsByClassName("tracking-tight")[4].innerText;
+                        return [title, price]
+                    """
+            data = self.driver.execute_script(script)
+            dict = {
+                "Product Name": data[0],
+                "Product Price": data[1],
+                "Product link": self.link,
+                "in_stock": "in_stock"
+            }
+            self.save_to_database(dict, self.site_address_id, self.product_id)
+            return dict
+
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_ubuy(self):
+        try:
+            self.driver.get(self.link)
+
+            script = f"""
+                        let title = document.getElementsByClassName("title")[0].innerText;
+                        let price = document.getElementsByClassName("product-price")[0].innerText;
+                        let stock =  document.getElementById("availability-status").innerText
+                        return [title, price ,stock]
+                    """
+            data = self.driver.execute_script(script)
+            dict = {
+                "Product Name": data[0],
+                "Product Price": data[1],
+                "Product link": self.link,
+                "in_stock": data[2],
+            }
+            self.save_to_database(dict, self.site_address_id, self.product_id)
+            return dict
+
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_bajaj(self):
+        try:
+            self.driver.get(self.link)
+
+            script = f"""
+                        let title = document.getElementsByClassName("info-prod-head")[0].innerText;
+                        let price = document.getElementsByClassName("absolute-discount-calc-offer-price")[0].innerText;
+                        return [title, price]
+                    """
+            data = self.driver.execute_script(script)
+            dict = {
+                "Product Name": data[0],
+                "Product Price": "₹" + data[1],
+                "Product link": self.link,
+                "in_stock": "in_stock"
+            }
+            self.save_to_database(dict, self.site_address_id, self.product_id)
+            return dict
+
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_jiomart(self):
+        try:
+            self.driver.get(self.link)
+
+            script = f"""
+                        let title = document.getElementsByClassName("product-header-name")[0].innerText;
+                        let price = document.getElementsByClassName("jm-heading-xs")[0].innerText;
+                        return [title, price]
+                    """
+            data = self.driver.execute_script(script)
+            dict = {
+                "Product Name": data[0],
+                "Product Price": data[1],
+                "Product link": self.link,
+                "in_stock": "in_stock"
+            }
+            self.save_to_database(dict, self.site_address_id, self.product_id)
+            return dict
+        except AttributeError as e:
+            print("An error occurred while scraping health_mall:", str(e))
+            return None
+    def scrape_reliancedigital(self):
+        try:
+            product_name = self.soup.find("h1", class_ = "pdp__title").get_text(strip=True)
+            if (self.soup.find(class_="pdp__offerPrice")):
+                product_price = self.soup.find(class_="pdp__offerPrice").text.encode("ascii", "ignore").decode()
+            elif (self.soup.find(class_="TextWeb__Text-sc-1cyx778-0 hmppFJ")):
+                product_price = self.soup.find(class_="TextWeb__Text-sc-1cyx778-0 hmppFJ").text.encode("ascii",
+                                                                                                  "ignore").decode()
+        except:
+            product_price = None
+        stock = self.soup.find(class_="pdp_noStockBlocksoldoutText2 mt_4")
+        data = {
+            "Product Name": product_name,
+            "Product Price": product_price,
+            "Product link": self.link,
+            "in_stock": stock
+        }
+        self.save_to_database(data, self.site_address_id, self.product_id)
+        return data
+    def scrape_vijaysales(self):
+        try:
+            product_name = self.soup.find("h1", id="ContentPlaceHolder1_h1ProductTitle").get_text(strip=True)
+            price = self.soup.find(class_="priceMRP")
+            p1 = price.findAll("span")
+            i = 0
+            for p2 in p1:
+                p2.find("span")
+                if (i == 1):
+                    product_price = p2.text.encode("ascii", "ignore").decode()
+                if (i > 1):
+                    break
+                i += 1
+        except Exception as msg:
+            product_price = None
+        stock = self.soup.find(class_="btnAddToBag btnHalfRed")
+        data = {
+            "Product Name": product_name,
+            "Product Price": product_price,
+            "Product link": self.link,
+            "in_stock": stock
+        }
+        self.save_to_database(data, self.site_address_id, self.product_id)
+        return data
     def save_to_database(self, data, site_address_id, product_id):
         try:
             connection = mysql.connector.connect(
